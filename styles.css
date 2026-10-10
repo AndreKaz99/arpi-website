@@ -931,6 +931,24 @@ body::after {
 /* ──────────────────────────────────────────────
    Video row (Media & Appearances)
    ────────────────────────────────────────────── */
+/* Same dark hover fill as the other rows (not while the video is open) */
+.row__inner { position: relative; overflow: hidden; isolation: isolate; }
+.row__inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.6s var(--ease);
+}
+.row--video:not(.is-playing) .row__inner:hover::before { transform: scaleY(1); transform-origin: top; }
+.row--video:not(.is-playing) .row__inner:hover .row__title { color: var(--bg); transform: translateX(12px); }
+.row--video:not(.is-playing) .row__inner:hover .row__year,
+.row--video:not(.is-playing) .row__inner:hover .row__meta { color: var(--dark-muted); }
+.row--video:not(.is-playing) .row__inner:hover .row__venue { color: var(--accent-2); }
+
 .row__inner {
   display: grid;
   grid-template-columns: 170px 1fr minmax(240px, 380px);
