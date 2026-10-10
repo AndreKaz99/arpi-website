@@ -54,7 +54,7 @@ window.SITE = {
   // Animated counters — `value` must be a number
   stats: [
     { value: 4, suffix: "", label: "Languages: Armenian, English, French and Spanish" },
-    { value: 7, suffix: "", label: "Conference presentations & invited talks" },
+    { value: 8, suffix: "", label: "Conference presentations & invited talks" },
     { value: 4, suffix: "", label: "Academic affiliations & service roles" },
     { value: 2, suffix: "", label: "Degrees from UCLA" },
   ],
@@ -133,9 +133,17 @@ window.SITE = {
   // Media & appearances — newest first
   appearances: [
     {
-      date: "November 2026",
+      date: "January 2027",
       type: "Conference",
       title: "Between Fiction, Memoir, and Manifesto: Negotiating Exile in Éloge du Métèque",
+      venue: "Modern Language Association (MLA) Annual Convention",
+      text: "Details for this upcoming talk will be shared soon.",
+      url: "",
+    },
+    {
+      date: "November 2026",
+      type: "Conference",
+      title: "(Un)veiling Exile: The Politics of the Female Body in Khomeiny, Sade et moi",
       venue: "National Women’s Studies Association",
       text: "Details for this upcoming talk will be shared soon.",
       url: "",
