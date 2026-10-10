@@ -739,8 +739,9 @@ body::after {
   line-height: 1.15;
   letter-spacing: -0.025em;
 }
+/* Unlit words stay readable: 3:1 or better, the WCAG minimum for large text */
 .about__statement .w {
-  opacity: 0.14;
+  opacity: 0.5;
   transition: opacity 0.4s linear;
 }
 .about__statement .w.on { opacity: 1; }
