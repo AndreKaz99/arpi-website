@@ -349,8 +349,9 @@ body::after {
     position: fixed;
     inset: 0;
     z-index: 105;
-    align-items: flex-end;
-    padding: 120px var(--gutter) 48px;
+    align-items: flex-start;
+    padding: 112px var(--gutter) 48px;
+    overflow-y: auto;
     background: var(--bg);
     clip-path: circle(0% at calc(100% - 40px) 36px);
     transition: clip-path 0.9s var(--ease-in-out);
