@@ -10,6 +10,8 @@ All text lives in **`content.js`**. Edit the values there and refresh. Layout an
 - Leave a `url` empty (`""`) to hide that link or button.
 - `person.cvFile` shows a "Download CV" button when set (e.g. `assets/Arpi-Melikyan-CV.pdf`).
 - `person.portrait` points at the hero photo (`assets/img/portrait.jpg`).
+- An appearance with a `video` block (a Vimeo `url`, a fallback `thumb` and a `duration`) gets a click to play thumbnail that expands into an embedded player.
+- The site avoids hyphens and dashes in visible text; keep new content consistent.
 
 ## Files
 
@@ -18,8 +20,7 @@ All text lives in **`content.js`**. Edit the values there and refresh. Layout an
 | `index.html` | Page structure |
 | `content.js` | All site content |
 | `styles.css` | Design tokens, layout, animations |
-| `main.js` | Renders content, smooth scroll, scroll and hover animations |
-| `assets/vendor/lenis.*` | [Lenis](https://github.com/darkroomengineering/lenis) smooth scroll (MIT), vendored |
+| `main.js` | Renders content, scroll and hover animations, video player |
 
 Animations respect the visitor's "reduce motion" setting.
 

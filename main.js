@@ -149,10 +149,7 @@
       h("p", { class: "eyebrow diss__label", "data-reveal": "" }, d.label),
       h("h3", { class: "diss__title", "data-split": "" }, d.title),
       h("p", { class: "diss__text", "data-reveal": "", style: "--d:150ms" }, d.text),
-      d.url
-        ? h("a", { class: "btn", href: d.url, target: "_blank", rel: "noopener", "data-magnetic": "", "data-reveal": "", style: "--d:250ms" },
-            h("span", {}, "Read the dissertation"), h("i", { class: "btn__arrow" }, "→"))
-        : null,
+      d.url ? dissBadge(d) : null,
     ].filter(Boolean));
     bind("pub-note").textContent = R.publicationsNote;
     bind("pub-text").textContent = R.publicationsText;
@@ -202,6 +199,7 @@
     if (!hideIfEmpty(S.appearances, pubs)) {
       pubs.append(
         ...S.appearances.map((a) => {
+          if (a.video) return videoRow(a);
           const tag = a.url ? "a" : "div";
           const attrs = { class: "row__link" };
           if (a.url) Object.assign(attrs, { href: a.url, target: "_blank", rel: "noopener" });
@@ -279,6 +277,132 @@
     $$("[data-split]").forEach(splitWords);
   }
 
+  /** Circular, slowly rotating “read the dissertation” link. */
+  function dissBadge(d) {
+    const a = h("a", {
+      class: "diss__badge",
+      href: d.url,
+      target: "_blank",
+      rel: "noopener",
+      "aria-label": "Read the dissertation on eScholarship (opens in a new tab)",
+      "data-magnetic": "",
+      "data-reveal": "scale",
+      style: "--d:300ms",
+    });
+    a.innerHTML = `
+      <svg class="diss__ring" viewBox="0 0 200 200" aria-hidden="true">
+        <defs><path id="dissRing" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs>
+        <text><textPath href="#dissRing" textLength="500" lengthAdjust="spacing">Read the dissertation · eScholarship · </textPath></text>
+      </svg>
+      <span class="diss__core" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </span>`;
+    return a;
+  }
+
+  /** Parse a Vimeo URL like vimeo.com/ID/HASH into its embed URL. */
+  function vimeoEmbed(url) {
+    const m = String(url).match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([0-9a-f]+))?/i);
+    if (!m) return null;
+    const q = new URLSearchParams({ autoplay: "1", title: "0", byline: "0", portrait: "0", dnt: "1", color: "8fb3a7" });
+    if (m[2]) q.set("h", m[2]);
+    return `https://player.vimeo.com/video/${m[1]}?${q}`;
+  }
+
+  /** Appearance row with a click to play video thumbnail. */
+  function videoRow(a) {
+    const v = a.video;
+    const img = h("img", { src: v.thumb || "", alt: "", loading: "lazy", decoding: "async" });
+    const dur = h("span", { class: "vthumb__dur" }, v.duration || "");
+    const thumb = h("button", { class: "vthumb", type: "button", "aria-label": `Play video: ${a.title}` },
+      h("span", { class: "vthumb__media" }, img),
+      h("span", { class: "vthumb__shade", "aria-hidden": "true" }),
+      h("span", { class: "vthumb__play", "aria-hidden": "true" }),
+      h("span", { class: "vthumb__meta", "aria-hidden": "true" }, h("span", {}, "Watch"), dur)
+    );
+    thumb.querySelector(".vthumb__play").innerHTML =
+      '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
+    const frame = h("div", { class: "vplayer__frame" }, thumb);
+    const close = h("button", { class: "vplayer__close", type: "button", "aria-label": "Close video" }, h("span", {}, "Close"), h("i", { "aria-hidden": "true" }, "×"));
+    const player = h("div", { class: "vplayer" }, frame, close);
+
+    const li = h("li", { class: "row row--video", "data-reveal": "" },
+      h("div", { class: "row__inner" },
+        h("span", { class: "row__year" }, a.date, h("small", {}, a.type)),
+        h("span", { class: "row__title" }, a.title,
+          h("span", { class: "row__venue" }, a.venue),
+          a.text ? h("span", { class: "row__meta" }, a.text) : null
+        ),
+        player
+      )
+    );
+
+    // Upgrade to the official, sharper Vimeo thumbnail when the visitor’s browser can reach it
+    if (window.fetch) {
+      fetch(`https://vimeo.com/api/oembed.json?url=${encodeURIComponent(v.url)}&width=1280`)
+        .then((r) => (r.ok ? r.json() : Promise.reject()))
+        .then((data) => {
+          if (data.duration && !v.duration) {
+            const s = Math.round(data.duration);
+            dur.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+          }
+          if (!data.thumbnail_url) return;
+          const src = data.thumbnail_url;
+          const pre = new Image();
+          pre.onload = () => { img.src = src; };
+          pre.src = src;
+        })
+        .catch(() => {});
+    }
+
+    // FLIP: animate the player between its compact and enlarged slots
+    const morph = (change) => {
+      const first = player.getBoundingClientRect();
+      change();
+      const last = player.getBoundingClientRect();
+      if (reduceMotion || !last.width) return;
+      player.animate(
+        [
+          { transformOrigin: "top left", transform: `translate(${first.left - last.left}px, ${first.top - last.top}px) scale(${first.width / last.width})` },
+          { transformOrigin: "top left", transform: "none" },
+        ],
+        { duration: 750, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
+      );
+    };
+
+    thumb.addEventListener("click", () => {
+      const src = vimeoEmbed(v.url);
+      if (!src) { window.open(v.url, "_blank", "noopener"); return; }
+      const iframe = h("iframe", {
+        class: "vplayer__iframe",
+        src,
+        title: a.title,
+        allow: "autoplay; fullscreen; picture-in-picture; clipboard-write",
+        allowfullscreen: "",
+      });
+      iframe.addEventListener("load", () => frame.classList.add("is-loaded"));
+      frame.append(iframe);
+      morph(() => li.classList.add("is-playing"));
+      setTimeout(() => {
+        const r = player.getBoundingClientRect();
+        if (r.bottom > window.innerHeight || r.top < 80) player.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+      }, 450);
+      close.focus({ preventScroll: true });
+    });
+
+    close.addEventListener("click", () => {
+      const iframe = frame.querySelector("iframe");
+      morph(() => {
+        li.classList.remove("is-playing");
+        frame.classList.remove("is-loaded");
+        if (iframe) iframe.remove();
+      });
+      thumb.focus({ preventScroll: true });
+    });
+
+    return li;
+  }
+
   function splitChars(el, text, baseDelay) {
     el.textContent = "";
     el.setAttribute("aria-hidden", "true");
@@ -309,24 +433,16 @@
   }
 
   /* ────────────────────────────────────────────
-     Smooth scroll (Lenis)
+     Scrolling (native, no smoothing)
      ──────────────────────────────────────────── */
-  let lenis = null;
   let velocity = 0;
-  function initSmoothScroll() {
-    if (reduceMotion || typeof window.Lenis !== "function") return;
-    lenis = new window.Lenis({ duration: 1.15, easing: (t) => 1 - Math.pow(1 - t, 4), smoothWheel: true });
-    lenis.on("scroll", (e) => { velocity = e.velocity || 0; });
-    const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
 
   function scrollTo(target) {
     const el = typeof target === "string" ? (target === "#top" ? 0 : $(target)) : target;
     if (el == null) return;
-    if (lenis) lenis.scrollTo(el, { offset: el === 0 ? 0 : -20, duration: 1.6 });
-    else if (el === 0) window.scrollTo({ top: 0, behavior: "smooth" });
-    else el.scrollIntoView({ behavior: "smooth" });
+    const behavior = reduceMotion ? "auto" : "smooth";
+    if (el === 0) window.scrollTo({ top: 0, behavior });
+    else el.scrollIntoView({ behavior });
   }
 
   /* ────────────────────────────────────────────
@@ -440,7 +556,7 @@
         if (y > lastY + 4 && y > 200) nav.classList.add("is-hidden");
         else if (y < lastY - 4 || y < 200) nav.classList.remove("is-hidden");
       }
-      if (!lenis) velocity = lerp(velocity, y - lastY, 0.2);
+      velocity = lerp(velocity, y - lastY, 0.2);
       lastY = y;
 
       if (!reduceMotion) {
@@ -574,7 +690,7 @@
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       menu.setAttribute("aria-hidden", String(!open));
-      if (lenis) open ? lenis.stop() : lenis.start();
+      document.documentElement.style.overflow = open ? "hidden" : "";
     };
     toggle.addEventListener("click", () => setMenu(!body.classList.contains("menu-open")));
     window.addEventListener("keydown", (e) => e.key === "Escape" && setMenu(false));
@@ -603,8 +719,6 @@
      Boot
      ──────────────────────────────────────────── */
   render();
-  initSmoothScroll();
-  if (lenis) lenis.stop();
   window.scrollTo(0, 0);
   initNav();
   initCursor();
@@ -614,7 +728,6 @@
   preloader(() => {
     document.body.classList.remove("is-loading");
     document.body.classList.add("is-ready");
-    if (lenis) lenis.start();
     initReveals();
     initScrollEffects();
   });

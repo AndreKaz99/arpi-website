@@ -13,9 +13,9 @@
  */
 window.SITE = {
   meta: {
-    title: "Dr. Arpi Melikyan — French & Francophone Studies",
+    title: "Dr. Arpi Melikyan | French & Francophone Studies",
     description:
-      "Dr. Arpi Melikyan — multilingual scholar and educator specializing in French and Francophone Studies at UCLA. Research on exile, body politics and symbolic homelands.",
+      "Dr. Arpi Melikyan, multilingual scholar and educator specializing in French and Francophone Studies at UCLA. Research on exile, body politics and symbolic homelands.",
   },
 
   person: {
@@ -27,7 +27,7 @@ window.SITE = {
     tagline:
       "Multilingual scholar and educator specializing in French and Francophone Studies. Grounded in her extensive research at UCLA, she brings a transcultural perspective to modern language pedagogy and literary analysis.",
     portrait: "assets/img/portrait.jpg",
-    cvFile: "", // e.g. "assets/Arpi-Melikyan-Teaching-CV.pdf" — shows a “Download CV” button when set
+    cvFile: "", // e.g. "assets/Arpi-Melikyan-Teaching-CV.pdf"; shows a “Download CV” button when set
   },
 
   // Words that scroll across the marquee band
@@ -53,7 +53,7 @@ window.SITE = {
 
   // Animated counters — `value` must be a number
   stats: [
-    { value: 4, suffix: "", label: "Languages — Armenian, English, French, Spanish" },
+    { value: 4, suffix: "", label: "Languages: Armenian, English, French and Spanish" },
     { value: 7, suffix: "", label: "Conference presentations & invited talks" },
     { value: 4, suffix: "", label: "Academic affiliations & service roles" },
     { value: 2, suffix: "", label: "Degrees from UCLA" },
@@ -66,8 +66,8 @@ window.SITE = {
       text: "Extensive experience at UCLA developing and delivering a diverse range of courses on French language and Francophone cultures, from introductory levels to advanced transcultural studies.",
     },
     {
-      title: "K–12 and Community Teaching",
-      text: "Dedicated educator within the Glendale Unified School District, fostering language acquisition and cultural literacy through primary and community-focused instructional roles.",
+      title: "K through 12 and Community Teaching",
+      text: "Dedicated educator within the Glendale Unified School District, fostering language acquisition and cultural literacy through primary and community focused instructional roles.",
     },
     {
       title: "Conferences & Invited Talks",
@@ -80,9 +80,9 @@ window.SITE = {
       label: "Dissertation",
       title: "Between Fiction, Memoir, and Manifesto: Negotiating Exile in the Works of Abnousse Shalmani",
       text: "A critical analysis of exile and body politics through the symbolic homelands explored in modern Francophone literature. The study negotiates the intersections of memory and manifesto within the specific context of Abnousse Shalmani’s narratives.",
-      url: "", // link to the dissertation PDF / repository
+      url: "https://escholarship.org/uc/item/4q51g34j",
     },
-    publicationsNote: "Peer-reviewed publications forthcoming",
+    publicationsNote: "Peer reviewed publications forthcoming",
     publicationsText:
       "Current research investigates the complex intersections of exile, trauma, and belonging within Francophone and Armenian cultural contexts. The project explores how displaced identities are reconstructed through literary and symbolic narratives of home.",
     other: [
@@ -97,8 +97,8 @@ window.SITE = {
     ],
     citations: [
       {
-        text: "Farhan, R. N. (2025). Postcolonial Feminism, Subaltern Voices, and Literary Resistance in Azar Nafisi’s Reading Lolita in Tehran. International Journal of Language, Literature and Culture, 5(4), 87–99.",
-        note: "Cites Dr. Arpi Melikyan’s scholarship on counter-narrative discourse and the subversive potential of literary framing as part of its theoretical framework and analysis.",
+        text: "Farhan, R. N. (2025). Postcolonial Feminism, Subaltern Voices, and Literary Resistance in Azar Nafisi’s Reading Lolita in Tehran. International Journal of Language, Literature and Culture, 5(4), 87 to 99.",
+        note: "Cites Dr. Arpi Melikyan’s scholarship on counter narrative discourse and the subversive potential of literary framing as part of its theoretical framework and analysis.",
       },
     ],
   },
@@ -117,15 +117,15 @@ window.SITE = {
       points: [],
     },
     {
-      period: "2018 — 2019",
+      period: "2018 to 2019",
       title: "Educator",
       place: "Glendale Unified School District",
       points: [],
     },
     {
-      period: "2016 — 2018",
+      period: "2016 to 2018",
       title: "Curriculum & Instruction",
-      place: "Curriculum Coordinator (2016–2017) & Language Instructor (2017–2018)",
+      place: "Curriculum Coordinator (2016 to 2017) & Language Instructor (2017 to 2018)",
       points: [],
     },
   ],
@@ -159,16 +159,22 @@ window.SITE = {
     {
       date: "June 2026",
       type: "Educational Video Series",
-      title: "Armenian Icons — Charles Aznavour",
+      title: "Armenian Icons: Charles Aznavour",
       venue: "Haykakart",
       text: "An educational exploration of Charles Aznavour’s life and legacy, examining his influence as a French singer of Armenian heritage and his enduring impact on French and Armenian culture. The series also highlights the history of Armenian diaspora communities in Paris and Marseille and their role in preserving Armenian identity.",
-      url: "", // e.g. the Vimeo link
+      url: "",
+      // Click-to-play video shown on this row
+      video: {
+        url: "https://vimeo.com/1206641223/8fcd9e5622",
+        thumb: "assets/img/aznavour-thumb.jpg", // fallback; the official Vimeo thumbnail loads automatically when available
+        duration: "2:39",
+      },
     },
     {
       date: "January 2026",
       type: "Invited Talk",
       title: "Du français académique à la classe immersive : trajectoire et apprentissages d’une enseignante multilangue",
-      venue: "Atelier professionnel AATF-SoCal, UCLA",
+      venue: "Atelier professionnel AATF SoCal, UCLA",
       text: "An exploration of the transition from academic French to everyday spoken French in a dual language immersion classroom, examining how multilingual educators adapt their language practices to foster authentic communication and effective language learning.",
       url: "",
     },
@@ -192,13 +198,13 @@ window.SITE = {
 
   education: [
     {
-      period: "2018 — 2025",
+      period: "2018 to 2025",
       degree: "PhD in French and Francophone Studies",
       place: "University of California, Los Angeles",
       note: "Dissertation: Between Fiction, Memoir, and Manifesto: Negotiating Exile in the Works of Abnousse Shalmani",
     },
     {
-      period: "2013 — 2015",
+      period: "2013 to 2015",
       degree: "BA in French, minor in Spanish",
       place: "University of California, Los Angeles",
       note: "",
