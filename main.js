@@ -6,6 +6,9 @@
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const bind = (key) => $(`[data-bind="${key}"]`);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Visitors can pause all ongoing animation (WCAG 2.2.2); the choice is remembered
+  let motionPaused = false;
+  try { motionPaused = localStorage.getItem("motion") === "paused"; } catch (e) {}
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const lerp = (a, b, t) => a + (b - a) * t;
@@ -56,13 +59,12 @@
     document.title = S.meta.title || fullName;
     $('meta[name="description"]').setAttribute("content", S.meta.description || "");
 
-    $(".nav__logo").textContent = initials;
+    $(".nav__logo").append(h("span", { "aria-hidden": "true" }, initials), h("span", { class: "sr-only" }, `${initials}, ${fullName}, back to top`));
     $(".preloader__name").textContent = fullName;
 
     // Hero
     bind("hero-eyebrow").textContent = p.eyebrow;
-    const title = $(".hero__title");
-    title.setAttribute("aria-label", fullName);
+    bind("hero-name").textContent = fullName;
     splitChars($(".hero__line--prefix"), p.prefix || "", 0);
     splitChars($(".hero__line--first"), p.firstName, 120);
     splitChars($(".hero__line--last"), p.lastName, 120 + p.firstName.length * 45 + 60);
@@ -92,6 +94,7 @@
     // Marquee — groups are duplicated so the loop is seamless
     const track = bind("focus");
     if (!hideIfEmpty(S.focus, track)) {
+      bind("focus-list").append(...S.focus.map((f) => h("li", {}, f)));
       const group = () => h("div", { class: "marquee__group" }, S.focus.map((f) => h("span", { class: "marquee__item" }, f)));
       track.append(group(), group());
       // Make sure one group is wider than the viewport
@@ -102,7 +105,6 @@
           [...g.children].forEach((c) => g.append(c.cloneNode(true)));
         }
         track.lastElementChild.replaceWith(g.cloneNode(true));
-        track.lastElementChild.setAttribute("aria-hidden", "true");
       });
     }
 
@@ -120,8 +122,8 @@
       stats.append(
         ...S.stats.map((s, i) =>
           h("div", { class: "stat", "data-reveal": "", style: `--d:${i * 90}ms` },
-            h("span", { class: "stat__num" }, h("span", { "data-count": s.value }, "0"), s.suffix ? h("sup", {}, s.suffix) : null),
-            h("span", { class: "stat__label" }, s.label)
+            h("span", { class: "stat__num", "aria-hidden": "true" }, h("span", { "data-count": s.value }, "0"), s.suffix ? h("sup", {}, s.suffix) : null),
+            h("span", { class: "stat__label" }, h("span", { class: "sr-only" }, `${s.value}${s.suffix || ""} `), s.label)
           )
         )
       );
@@ -133,7 +135,7 @@
       cards.append(
         ...S.highlights.map((c, i) =>
           h("article", { class: "card", "data-reveal": "", "data-tilt": "", style: `--d:${(i % 3) * 110}ms` },
-            h("span", { class: "card__num" }, String(i + 1).padStart(2, "0")),
+            h("span", { class: "card__num", "aria-hidden": "true" }, String(i + 1).padStart(2, "0")),
             icon(i),
             h("h3", { class: "card__title" }, c.title),
             h("p", { class: "card__text" }, c.text)
@@ -206,11 +208,12 @@
           return h("li", { class: "row", "data-reveal": "" },
             h(tag, attrs,
               h("span", { class: "row__year" }, a.date, h("small", {}, a.type)),
-              h("span", { class: "row__title" }, a.title,
-                h("span", { class: "row__venue" }, a.venue),
+              h("span", { class: "row__title" }, h("span", { lang: a.lang }, a.title),
+                h("span", { class: "row__venue", lang: a.lang }, a.venue),
                 a.text ? h("span", { class: "row__meta" }, a.text) : null
               ),
-              a.url ? h("span", { class: "row__arrow", "aria-hidden": "true" }, "→") : null
+              a.url ? h("span", { class: "row__arrow", "aria-hidden": "true" }, "→") : null,
+              a.url ? h("span", { class: "sr-only" }, " (opens in a new tab)") : null
             )
           );
         })
@@ -270,7 +273,10 @@
       c.phone ? { label: c.phone, url: `tel:${c.phone.replace(/[^\d+]/g, "")}` } : null,
       ...(c.links || []).filter((l) => l.url),
     ].filter(Boolean);
-    links.append(...linkItems.map((l) => h("li", {}, h("a", { href: l.url, target: l.url.startsWith("http") ? "_blank" : null, rel: "noopener" }, l.label))));
+    links.append(...linkItems.map((l) => {
+      const ext = l.url.startsWith("http");
+      return h("li", {}, h("a", { href: l.url, target: ext ? "_blank" : null, rel: "noopener" }, l.label, ext ? h("span", { class: "sr-only" }, " (opens in a new tab)") : null));
+    }));
     bind("copy").textContent = `© ${new Date().getFullYear()} ${fullName}`;
 
     // Split section headings into masked words
@@ -284,7 +290,7 @@
       href: d.url,
       target: "_blank",
       rel: "noopener",
-      "aria-label": "Read the dissertation on eScholarship (opens in a new tab)",
+      "aria-label": "Read the dissertation · eScholarship (opens in a new tab)",
       "data-magnetic": "",
       "data-reveal": "scale",
       style: "--d:300ms",
@@ -314,14 +320,14 @@
     const v = a.video;
     const img = h("img", { src: v.thumb || "", alt: "", loading: "lazy", decoding: "async" });
     const dur = h("span", { class: "vthumb__dur" }, v.duration || "");
-    const thumb = h("button", { class: "vthumb", type: "button", "aria-label": `Play video: ${a.title}` },
+    const thumb = h("button", { class: "vthumb", type: "button", "aria-label": `Watch ${v.duration ? v.duration + " " : ""}video: ${a.title}` },
       h("span", { class: "vthumb__media" }, img),
       h("span", { class: "vthumb__shade", "aria-hidden": "true" }),
       h("span", { class: "vthumb__play", "aria-hidden": "true" }),
-      h("span", { class: "vthumb__meta", "aria-hidden": "true" }, h("span", {}, "Watch"), dur)
+      h("span", { class: "vthumb__meta", "aria-hidden": "true" }, h("span", {}, "Watch"), " ", dur)
     );
     thumb.querySelector(".vthumb__play").innerHTML =
-      '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
+      '<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>';
     const frame = h("div", { class: "vplayer__frame" }, thumb);
     const close = h("button", { class: "vplayer__close", type: "button", "aria-label": "Close video" }, h("span", {}, "Close"), h("i", { "aria-hidden": "true" }, "×"));
     const player = h("div", { class: "vplayer" }, frame, close);
@@ -329,8 +335,8 @@
     const li = h("li", { class: "row row--video", "data-reveal": "" },
       h("div", { class: "row__inner" },
         h("span", { class: "row__year" }, a.date, h("small", {}, a.type)),
-        h("span", { class: "row__title" }, a.title,
-          h("span", { class: "row__venue" }, a.venue),
+        h("span", { class: "row__title" }, h("span", { lang: a.lang }, a.title),
+          h("span", { class: "row__venue", lang: a.lang }, a.venue),
           a.text ? h("span", { class: "row__meta" }, a.text) : null
         ),
         player
@@ -376,7 +382,7 @@
       const iframe = h("iframe", {
         class: "vplayer__iframe",
         src,
-        title: a.title,
+        title: `Video: ${a.title}`,
         allow: "autoplay; fullscreen; picture-in-picture; clipboard-write",
         allowfullscreen: "",
       });
@@ -466,6 +472,13 @@
     };
     window.addEventListener("scrollend", settle);
     setTimeout(settle, 1600);
+
+    // Move keyboard / screen reader focus along with the scroll
+    const focusEl = typeof target === "string" ? document.getElementById(target.slice(1)) : target;
+    if (focusEl && focusEl.focus) {
+      if (!focusEl.matches("a[href], button, [tabindex]")) focusEl.setAttribute("tabindex", "-1");
+      focusEl.focus({ preventScroll: true });
+    }
   }
 
   /* ────────────────────────────────────────────
@@ -557,6 +570,17 @@
     let lastT = performance.now();
     let mx = 0, my = 0, smx = 0, smy = 0;
 
+    // The marquee also holds still while hovered or while its control has focus
+    let marqueeHeld = false;
+    const band = $(".marquee");
+    if (band) {
+      const hold = (v) => () => { marqueeHeld = v; };
+      band.addEventListener("mouseenter", hold(true));
+      band.addEventListener("mouseleave", hold(false));
+      band.addEventListener("focusin", hold(true));
+      band.addEventListener("focusout", hold(false));
+    }
+
     if (finePointer) {
       window.addEventListener("mousemove", (e) => {
         mx = e.clientX / window.innerWidth - 0.5;
@@ -575,7 +599,7 @@
       progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
 
       // Hide nav on scroll down, show on scroll up
-      if (!document.body.classList.contains("menu-open")) {
+      if (!document.body.classList.contains("menu-open") && !nav.contains(document.activeElement)) {
         if (y > lastY + 4 && y > 200) nav.classList.add("is-hidden");
         else if (y < lastY - 4 || y < 200) nav.classList.remove("is-hidden");
       }
@@ -584,7 +608,7 @@
 
       if (!reduceMotion) {
         // About statement: light up word by word
-        if (statement && words.length) {
+        if (statement && words.length && !motionPaused) {
           const r = statement.getBoundingClientRect();
           const p = clamp((vh * 0.85 - r.top) / (r.height + vh * 0.35), 0, 1);
           const lit = Math.round(p * words.length);
@@ -615,7 +639,7 @@
         });
 
         // Marquee: base drift + scroll velocity boost, direction follows scroll
-        if (track && track.firstElementChild) {
+        if (track && track.firstElementChild && !motionPaused && !marqueeHeld) {
           if (velocity > 0.5) marqueeDir = 1;
           else if (velocity < -0.5) marqueeDir = -1;
           const speed = (0.04 + Math.min(Math.abs(velocity) * 0.012, 0.5)) * marqueeDir;
@@ -708,15 +732,47 @@
     const body = document.body;
     const toggle = $(".nav__toggle");
     const menu = $(".menu");
+    const nav = $(".nav");
+    const behind = [$(".skip-link"), $("main"), $(".contact")];
     const setMenu = (open) => {
+      const wasOpen = body.classList.contains("menu-open");
       body.classList.toggle("menu-open", open);
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-      menu.setAttribute("aria-hidden", String(!open));
+      // Only the open menu (and the header with its close button) can be reached
+      menu.inert = !open;
+      behind.forEach((el) => (el.inert = open));
       document.documentElement.style.overflow = open ? "hidden" : "";
+      if (open && !wasOpen) $("a", menu).focus({ preventScroll: true });
+      return wasOpen;
     };
     toggle.addEventListener("click", () => setMenu(!body.classList.contains("menu-open")));
-    window.addEventListener("keydown", (e) => e.key === "Escape" && setMenu(false));
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && setMenu(false)) toggle.focus();
+    });
+    // Close the mobile menu if the window grows past the mobile breakpoint
+    window.matchMedia("(max-width: 900px)").addEventListener("change", (e) => { if (!e.matches) setMenu(false); });
+
+    // Keep the auto-hiding nav on screen while it holds keyboard focus
+    nav.addEventListener("focusin", () => nav.classList.remove("is-hidden"));
+
+    // Reveal-on-scroll content must be visible as soon as it receives focus
+    document.addEventListener("focusin", (e) => {
+      for (let el = e.target; el && el !== document.body; el = el.parentElement) {
+        if (el.matches("[data-reveal], [data-reveal-words]")) el.classList.add("is-in");
+      }
+    });
+
+    // The contact footer sits underneath the page while it is a curtain;
+    // tabbing into it scrolls it fully into view so focus is never covered.
+    const footer = $(".contact");
+    footer.addEventListener("focusin", (e) => {
+      if (!footer.classList.contains("is-curtain") || e.target === footer) return;
+      const root = document.documentElement;
+      if (window.scrollY < root.scrollHeight - window.innerHeight - 2) {
+        window.scrollTo({ top: root.scrollHeight, behavior: "instant" });
+      }
+    });
 
     document.addEventListener("click", (e) => {
       const a = e.target.closest('a[href^="#"]');
@@ -733,6 +789,23 @@
     $(".to-top").addEventListener("click", () => scrollTo("#top"));
   }
 
+  /* Pause / play control for all ongoing animation */
+  function initMotionToggle() {
+    const btn = $(".motion-toggle");
+    if (!btn) return;
+    if (reduceMotion) { btn.remove(); return; }
+    const apply = () => {
+      document.documentElement.classList.toggle("motion-paused", motionPaused);
+      btn.setAttribute("aria-pressed", String(motionPaused));
+    };
+    btn.addEventListener("click", () => {
+      motionPaused = !motionPaused;
+      try { localStorage.setItem("motion", motionPaused ? "paused" : "playing"); } catch (e) {}
+      apply();
+    });
+    apply();
+  }
+
   /* Footer curtain reveal only when the footer fits on screen */
   function initCurtain() {
     const footer = $(".contact");
@@ -747,6 +820,7 @@
   render();
   window.scrollTo(0, 0);
   initNav();
+  initMotionToggle();
   initCursor();
   initMagnetic();
   initTilt();

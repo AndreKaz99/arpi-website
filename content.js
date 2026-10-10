@@ -174,6 +174,7 @@ window.SITE = {
       date: "January 2026",
       type: "Invited Talk",
       title: "Du français académique à la classe immersive : trajectoire et apprentissages d’une enseignante multilangue",
+      lang: "fr", // title and venue are in French, so screen readers pronounce them correctly
       venue: "Atelier professionnel AATF SoCal, UCLA",
       text: "An exploration of the transition from academic French to everyday spoken French in a dual language immersion classroom, examining how multilingual educators adapt their language practices to foster authentic communication and effective language learning.",
       url: "",

@@ -22,7 +22,14 @@ All text lives in **`content.js`**. Edit the values there and refresh. Layout an
 | `styles.css` | Design tokens, layout, animations |
 | `main.js` | Renders content, scroll and hover animations, video player |
 
-Animations respect the visitor's "reduce motion" setting.
+## Accessibility
+
+The site targets WCAG 2.2 AA (the standard used for ADA compliance). When editing, keep these in place:
+
+- Animations respect the visitor's "reduce motion" setting, and the round pause button in the marquee band stops all ongoing motion (remembered per visitor).
+- Text on content that is not English gets a `lang` code (see the French appearance in `content.js`).
+- Keep `--muted` and other text colours at 4.5:1 contrast or better against their background.
+- Images need meaningful `alt` text; purely decorative elements are `aria-hidden`.
 
 ## Preview locally
 
