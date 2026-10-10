@@ -440,13 +440,32 @@
   function scrollTo(target) {
     const el = typeof target === "string" ? (target === "#top" ? 0 : $(target)) : target;
     if (el == null) return;
-    const behavior = reduceMotion ? "auto" : "smooth";
-    if (el === 0) window.scrollTo({ top: 0, behavior });
-    // A sticky element (the contact curtain) already reads as “in view”, so
-    // scrollIntoView does nothing; it is fully revealed at the page bottom.
-    else if (getComputedStyle(el).position === "sticky")
-      window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
-    else el.scrollIntoView({ behavior });
+    const root = document.documentElement;
+    const max = root.scrollHeight - window.innerHeight;
+    let top;
+    if (el === 0) top = 0;
+    // The contact curtain is sticky, so its on-screen box reads as “already in
+    // view”; it is fully revealed at the very bottom of the page.
+    // (scrollHeight overshoots on purpose; the browser clamps it to the true end)
+    else if (el.classList.contains("is-curtain") || /sticky/.test(getComputedStyle(el).position)) top = root.scrollHeight;
+    else top = Math.min(el.getBoundingClientRect().top + window.scrollY, max);
+    top = Math.max(0, top);
+    window.scrollTo({ top, behavior: reduceMotion ? "instant" : "smooth" });
+
+    // Safety net: some mobile browsers stop a smooth scroll short of its
+    // target (or drop it entirely). Once scrolling settles, finish the job.
+    const want = () => Math.min(top, root.scrollHeight - window.innerHeight);
+    let done = false;
+    const started = performance.now();
+    const settle = (e) => {
+      // Ignore a stray scrollend fired before the smooth scroll gets going
+      if (done || (e && performance.now() - started < 200)) return;
+      done = true;
+      window.removeEventListener("scrollend", settle);
+      if (Math.abs(window.scrollY - want()) > 2) window.scrollTo({ top: want(), behavior: "instant" });
+    };
+    window.addEventListener("scrollend", settle);
+    setTimeout(settle, 1600);
   }
 
   /* ────────────────────────────────────────────
@@ -705,8 +724,11 @@
       const href = a.getAttribute("href");
       if (href.length < 2) return;
       e.preventDefault();
+      const wasOpen = document.body.classList.contains("menu-open");
       setMenu(false);
-      scrollTo(href);
+      // Let the page become scrollable again (the menu locks it) before moving
+      if (wasOpen) requestAnimationFrame(() => requestAnimationFrame(() => scrollTo(href)));
+      else scrollTo(href);
     });
     $(".to-top").addEventListener("click", () => scrollTo("#top"));
   }
