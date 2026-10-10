@@ -12,9 +12,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300..600&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=8" />
 </head>
 <body class="is-loading">
+  <a href="#top" class="skip-link">Skip to main content</a>
   <noscript><style>.preloader{display:none}</style><p class="noscript">Please enable JavaScript to view this site.</p></noscript>
 
   <!-- Preloader -->
@@ -34,7 +35,7 @@
 
   <!-- Navigation -->
   <header class="nav">
-    <a href="#top" class="nav__logo" data-magnetic aria-label="Back to top"></a>
+    <a href="#top" class="nav__logo" data-magnetic></a>
     <nav class="nav__links" aria-label="Primary">
       <a href="#about">About</a>
       <a href="#research">Research</a>
@@ -43,11 +44,11 @@
       <a href="#education">Education</a>
     </nav>
     <a href="#contact" class="nav__cta btn btn--small" data-magnetic><span>Contact</span></a>
-    <button class="nav__toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+    <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
   </header>
 
-  <div class="menu" aria-hidden="true">
-    <nav class="menu__links">
+  <div class="menu" id="menu" inert>
+    <nav class="menu__links" aria-label="Menu">
       <a href="#about">About</a>
       <a href="#research">Research</a>
       <a href="#teaching">Teaching</a>
@@ -57,7 +58,7 @@
     </nav>
   </div>
 
-  <main id="top">
+  <main id="top" tabindex="-1">
     <!-- Hero -->
     <section class="hero" data-section>
       <div class="hero__bg" aria-hidden="true">
@@ -66,15 +67,16 @@
       <div class="hero__grid container">
         <div class="hero__text">
           <p class="eyebrow hero__eyebrow"><span class="pulse"></span><span data-bind="hero-eyebrow"></span></p>
-          <h1 class="hero__title" aria-label="">
+          <h1 class="hero__title">
+            <span class="sr-only" data-bind="hero-name"></span>
             <span class="hero__line hero__line--prefix"></span>
             <span class="hero__line hero__line--first"></span>
             <span class="hero__line hero__line--last"></span>
           </h1>
           <p class="hero__tagline" data-bind="tagline"></p>
           <div class="hero__actions">
-            <a href="#contact" class="btn" data-magnetic><span>Get in touch</span><i class="btn__arrow">→</i></a>
-            <a href="#" class="btn btn--ghost" data-bind="cv" data-magnetic><span>Download CV</span><i class="btn__arrow">↓</i></a>
+            <a href="#contact" class="btn" data-magnetic><span>Get in touch</span><i class="btn__arrow" aria-hidden="true">→</i></a>
+            <a href="#" class="btn btn--ghost" data-bind="cv" data-magnetic><span>Download CV</span><i class="btn__arrow" aria-hidden="true">↓</i></a>
           </div>
         </div>
         <figure class="hero__portrait" data-parallax="-0.08">
@@ -82,19 +84,24 @@
           <figcaption class="portrait__tag" data-bind="credentials"></figcaption>
         </figure>
       </div>
-      <a href="#about" class="scroll-cue" aria-label="Scroll to content"><span>Scroll</span><i></i></a>
+      <a href="#about" class="scroll-cue" aria-label="Scroll to content"><span>Scroll</span><i aria-hidden="true"></i></a>
     </section>
 
     <!-- Marquee -->
     <section class="marquee" aria-label="Areas of focus">
-      <div class="marquee__track" data-bind="focus"></div>
+      <ul class="sr-only" data-bind="focus-list"></ul>
+      <div class="marquee__track" data-bind="focus" aria-hidden="true"></div>
+      <button class="motion-toggle" type="button" aria-pressed="false" aria-label="Pause animations">
+        <svg class="motion-toggle__pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <svg class="motion-toggle__play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+      </button>
     </section>
 
     <!-- About -->
     <section class="section about" id="about" data-section>
       <div class="container">
         <header class="section__head">
-          <span class="section__index">01</span>
+          <span class="section__index" aria-hidden="true">01</span>
           <h2 class="section__title" data-split>About</h2>
         </header>
         <p class="about__statement" data-bind="statement"></p>
@@ -109,7 +116,7 @@
     <section class="section expertise" id="featured" data-section>
       <div class="container">
         <header class="section__head">
-          <span class="section__index">02</span>
+          <span class="section__index" aria-hidden="true">02</span>
           <h2 class="section__title" data-split>Featured Work</h2>
         </header>
         <div class="cards" data-bind="highlights"></div>
@@ -120,7 +127,7 @@
     <section class="section research" id="research" data-section>
       <div class="container">
         <header class="section__head">
-          <span class="section__index">03</span>
+          <span class="section__index" aria-hidden="true">03</span>
           <h2 class="section__title" data-split>Research &amp; Publications</h2>
         </header>
         <article class="diss" data-bind="dissertation"></article>
@@ -140,7 +147,7 @@
     <section class="section experience" id="teaching" data-section>
       <div class="container">
         <header class="section__head">
-          <span class="section__index">04</span>
+          <span class="section__index" aria-hidden="true">04</span>
           <h2 class="section__title" data-split>Teaching Experience</h2>
         </header>
         <div class="timeline">
@@ -154,7 +161,7 @@
     <section class="section pubs" id="appearances" data-section>
       <div class="container">
         <header class="section__head">
-          <span class="section__index">05</span>
+          <span class="section__index" aria-hidden="true">05</span>
           <h2 class="section__title" data-split>Media &amp; Appearances</h2>
         </header>
         <ul class="rows" data-bind="appearances"></ul>
@@ -166,7 +173,7 @@
       <div class="container edu__grid">
         <div>
           <header class="section__head">
-            <span class="section__index">06</span>
+            <span class="section__index" aria-hidden="true">06</span>
             <h2 class="section__title" data-split>Education</h2>
           </header>
           <ul class="edu__list" data-bind="education"></ul>
@@ -177,7 +184,7 @@
         </div>
         <div>
           <header class="section__head">
-            <span class="section__index">07</span>
+            <span class="section__index" aria-hidden="true">07</span>
             <h2 class="section__title" data-split>Affiliation &amp; Service</h2>
           </header>
           <ul class="edu__list" data-bind="affiliations"></ul>
@@ -199,10 +206,10 @@
         <p class="contact__copy" data-bind="copy"></p>
       </div>
     </div>
-    <button class="to-top" data-magnetic aria-label="Back to top">↑</button>
+    <button class="to-top" type="button" data-magnetic aria-label="Back to top"><span aria-hidden="true">↑</span></button>
   </footer>
 
-  <script src="content.js?v=7" defer></script>
-  <script src="main.js?v=7" defer></script>
+  <script src="content.js?v=8" defer></script>
+  <script src="main.js?v=8" defer></script>
 </body>
 </html>

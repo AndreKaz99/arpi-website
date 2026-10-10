@@ -7,7 +7,7 @@
   --surface: #fbfaf7;
   --ink: #121614;
   --ink-2: #3b403d;
-  --muted: #7a7f7a;
+  --muted: #636863; /* 4.5:1 or better on every light background (WCAG AA) */
   --line: rgba(18, 22, 20, 0.12);
   --accent: #2e5e55;
   --accent-2: #8fb3a7;
@@ -31,7 +31,7 @@
 *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 
 body {
   margin: 0;
@@ -64,6 +64,47 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 
 .noscript { padding: 40px; text-align: center; }
+
+/* ──────────────────────────────────────────────
+   Accessibility
+   ────────────────────────────────────────────── */
+/* Read by screen readers, not shown on screen */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Appears only when reached with the keyboard */
+.skip-link {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 400;
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 14px;
+  font-weight: 500;
+  transform: translateY(-200%);
+  transition: transform 0.3s var(--ease);
+}
+.skip-link:focus { transform: none; }
+
+/* Keyboard focus ring (mouse clicks don't show it) */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.contact :focus-visible,
+.diss :focus-visible,
+.skip-link:focus-visible { outline-color: var(--accent-2); }
+[tabindex="-1"]:focus { outline: none; }
 
 /* Subtle film grain for depth */
 body::after {
@@ -139,15 +180,18 @@ body::after {
   transform: translateY(101%);
   transition: transform 0.6s var(--ease);
 }
-.btn:hover::before { transform: translateY(0); }
+.btn:hover::before,
+.btn:focus-visible::before { transform: translateY(0); }
 .btn__arrow {
   font-style: normal;
   display: inline-block;
   transition: transform 0.5s var(--ease);
 }
-.btn:hover .btn__arrow { transform: translateX(4px); }
+.btn:hover .btn__arrow,
+.btn:focus-visible .btn__arrow { transform: translateX(4px); }
 .btn--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
-.btn--ghost:hover { color: var(--bg); }
+.btn--ghost:hover,
+.btn--ghost:focus-visible { color: var(--bg); }
 .btn--ghost:hover .btn__arrow { transform: translateY(3px); }
 .btn--small { --h: 42px; padding: 0 20px; font-size: 14px; }
 
@@ -595,6 +639,41 @@ body::after {
   white-space: nowrap;
 }
 .marquee__item:nth-child(even) { font-style: italic; color: var(--accent); }
+/* Pause / play for all ongoing animation */
+.motion-toggle {
+  position: absolute;
+  top: 50%;
+  right: var(--gutter);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink-2);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: background 0.3s, color 0.3s;
+}
+/* The words fade out just before the control */
+.marquee:has(.motion-toggle)::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: calc(var(--gutter) + 140px);
+  background: linear-gradient(90deg, rgba(244, 242, 237, 0), var(--bg) 60%);
+  pointer-events: none;
+}
+.motion-toggle:hover { background: var(--ink); color: var(--bg); }
+.motion-toggle__play,
+.motion-toggle[aria-pressed="true"] .motion-toggle__pause { display: none; }
+.motion-toggle[aria-pressed="true"] .motion-toggle__play { display: block; margin-left: 2px; }
+.motion-paused *,
+.motion-paused *::before,
+.motion-paused *::after { animation-play-state: paused !important; }
+.motion-paused .about__statement .w { opacity: 1; }
+
 .marquee__item::after {
   content: "✳";
   font-size: 0.5em;
@@ -882,7 +961,7 @@ body::after {
   transition: transform 0.6s var(--ease);
 }
 .row__year { padding-top: 8px; font-size: 14px; color: var(--muted); transition: color 0.4s; }
-.row__year small { display: block; margin-top: 2px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.8; }
+.row__year small { display: block; margin-top: 2px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
 .row__venue {
   display: block;
   margin-top: 10px;
@@ -894,7 +973,8 @@ body::after {
   color: var(--accent);
   transition: color 0.4s;
 }
-.row__link:hover .row__venue { color: var(--accent-2); }
+.row__link:hover .row__venue,
+.row__link:focus-visible .row__venue { color: var(--accent-2); }
 .row__meta { max-width: 760px; line-height: 1.6; }
 .row__title {
   font-family: var(--serif);
@@ -915,12 +995,18 @@ body::after {
   box-shadow: inset 0 0 0 1px var(--line);
   transition: transform 0.6s var(--ease), background 0.4s, color 0.4s, box-shadow 0.4s;
 }
-.row__link:hover::before { transform: scaleY(1); transform-origin: top; }
-.row__link:hover .row__title { color: var(--bg); transform: translateX(12px); }
+.row__link:hover::before,
+.row__link:focus-visible::before { transform: scaleY(1); transform-origin: top; }
+.row__link:hover .row__title,
+.row__link:focus-visible .row__title { color: var(--bg); transform: translateX(12px); }
 .row__link:hover .row__year,
-.row__link:hover .row__meta { color: var(--dark-muted); }
-.row__link:hover .row__meta em { color: var(--accent-2); }
-.row__link:hover .row__arrow { background: var(--bg); color: var(--ink); box-shadow: none; transform: rotate(-45deg); }
+.row__link:hover .row__meta,
+.row__link:focus-visible .row__year,
+.row__link:focus-visible .row__meta { color: var(--dark-muted); }
+.row__link:hover .row__meta em,
+.row__link:focus-visible .row__meta em { color: var(--accent-2); }
+.row__link:hover .row__arrow,
+.row__link:focus-visible .row__arrow { background: var(--bg); color: var(--ink); box-shadow: none; transform: rotate(-45deg); }
 
 @media (max-width: 640px) {
   .row__link { grid-template-columns: 1fr auto; padding: 24px 4px; gap: 6px 16px; }
@@ -1030,6 +1116,7 @@ body::after {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 .vthumb__dur {
   padding: 4px 8px;
@@ -1065,7 +1152,8 @@ body::after {
   transition: background 0.3s, color 0.3s;
 }
 .vplayer__close i { font-style: normal; font-size: 18px; line-height: 1; }
-.vplayer__close:hover { background: var(--ink); color: var(--bg); }
+.vplayer__close:hover,
+.vplayer__close:focus-visible { background: var(--ink); color: var(--bg); }
 
 /* Playing: the player moves under the text and takes the full width */
 .row--video.is-playing .vplayer { grid-column: 2 / -1; }
@@ -1161,7 +1249,8 @@ body::after {
   transition: inset 0.6s var(--ease), border-color 0.4s;
 }
 .diss__core svg { transition: transform 0.6s var(--ease); }
-.diss__badge:hover .diss__core { transform: scale(1.12); background: var(--dark-ink); }
+.diss__badge:hover .diss__core,
+.diss__badge:focus-visible .diss__core { transform: scale(1.12); background: var(--dark-ink); }
 .diss__badge:hover .diss__core::before { inset: -18px; border-color: rgba(236, 235, 229, 0.35); }
 .diss__badge:hover .diss__core svg { transform: rotate(45deg); }
 .diss__badge:hover .diss__ring { animation-duration: 8s; }
@@ -1358,7 +1447,8 @@ main {
   transform: scaleX(0.2);
   transition: transform 0.8s var(--ease);
 }
-.contact__email:hover::after { transform: scaleX(1); transform-origin: left; }
+.contact__email:hover::after,
+.contact__email:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 .contact__meta {
   display: flex;
   flex-wrap: wrap;
@@ -1376,7 +1466,8 @@ main {
   color: var(--dark-muted);
   transition: color 0.3s;
 }
-.contact__links a:hover { color: var(--dark-ink); }
+.contact__links a:hover,
+.contact__links a:focus-visible { color: var(--dark-ink); }
 .contact__copy { font-size: 13px; color: var(--dark-muted); }
 
 .to-top {
@@ -1390,7 +1481,8 @@ main {
   font-size: 20px;
   transition: background 0.4s, color 0.4s;
 }
-.to-top:hover { background: var(--dark-ink); color: var(--dark); }
+.to-top:hover,
+.to-top:focus-visible { background: var(--dark-ink); color: var(--dark); }
 
 @media (max-width: 700px) {
   .contact { min-height: 0; padding-top: 120px; }
