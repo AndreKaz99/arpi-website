@@ -77,7 +77,7 @@
     const media = bind("portrait");
     media.append(
       p.portrait
-        ? h("img", { src: p.portrait, alt: `Portrait of ${fullName}`, loading: "eager" })
+        ? h("img", { src: p.portrait, alt: `Portrait of ${fullName}`, loading: "eager", fetchpriority: "high" })
         : h("div", { class: "monogram", "aria-hidden": "true" }, initials)
     );
     bind("credentials").append(
