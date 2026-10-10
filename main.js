@@ -442,6 +442,10 @@
     if (el == null) return;
     const behavior = reduceMotion ? "auto" : "smooth";
     if (el === 0) window.scrollTo({ top: 0, behavior });
+    // A sticky element (the contact curtain) already reads as “in view”, so
+    // scrollIntoView does nothing; it is fully revealed at the page bottom.
+    else if (getComputedStyle(el).position === "sticky")
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior });
     else el.scrollIntoView({ behavior });
   }
 
