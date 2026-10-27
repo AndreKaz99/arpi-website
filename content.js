@@ -44,7 +44,7 @@ window.SITE = {
   about: {
     // Large statement that lights up word-by-word as you scroll
     statement:
-      "Dr. Arpi Melikyan is a Professor of French and Francophone Studies, specializing in the intersections of exile, body politics, and symbolic homelands.",
+      "Dr. Arpi Melikyan is a scholar and educator of French and Francophone Studies, specializing in the intersections of exile, body politics, and symbolic homelands.",
     paragraphs: [
       "Her work deeply explores how narrative structures in French and Armenian contexts negotiate the complexities of identity and displacement.",
       "Her research interests are centered on transcultural studies and the advancement of language pedagogy. In the classroom, she focuses on fostering a nuanced understanding of Francophone literature, encouraging students to engage with texts as cultural manifestos of historical and personal negotiation.",
