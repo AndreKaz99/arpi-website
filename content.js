@@ -51,12 +51,12 @@ window.SITE = {
     ],
   },
 
-  // Animated counters — `value` must be a number
+  // Animated counters: a number counts up; text (e.g. "PhD") is shown as is
   stats: [
     { value: 4, suffix: "", label: "Languages: Armenian, English, French and Spanish" },
     { value: 8, suffix: "", label: "Conference presentations & invited talks" },
     { value: 4, suffix: "", label: "Academic affiliations & service roles" },
-    { value: 2, suffix: "", label: "Degrees from UCLA" },
+    { value: "PhD", suffix: "", label: "Degree from UCLA" },
   ],
 
   // “Featured Work & News” highlights

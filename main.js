@@ -122,7 +122,7 @@
       stats.append(
         ...S.stats.map((s, i) =>
           h("div", { class: "stat", "data-reveal": "", style: `--d:${i * 90}ms` },
-            h("span", { class: "stat__num", "aria-hidden": "true" }, h("span", { "data-count": s.value }, "0"), s.suffix ? h("sup", {}, s.suffix) : null),
+            h("span", { class: "stat__num", "aria-hidden": "true" }, (typeof s.value === "number" ? h("span", { "data-count": s.value }, "0") : h("span", {}, s.value)), s.suffix ? h("sup", {}, s.suffix) : null),
             h("span", { class: "stat__label" }, h("span", { class: "sr-only" }, `${s.value}${s.suffix || ""} `), s.label)
           )
         )
