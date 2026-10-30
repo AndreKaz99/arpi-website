@@ -50,7 +50,7 @@ window.SITE = {
 
   // Animated counters: a number counts up; text (e.g. "PhD") is shown as is
   stats: [
-    { value: 4, suffix: "", label: "Languages: Armenian, English, French and Spanish" },
+    { value: 4, suffix: "", label: "Languages: English, French, Armenian, and Spanish" },
     { value: 8, suffix: "", label: "Conference presentations & invited talks" },
     { value: 4, suffix: "", label: "Academic affiliations & service roles" },
     { value: "PhD", suffix: "", label: "Degree from UCLA" },
@@ -225,9 +225,9 @@ window.SITE = {
   ],
 
   languages: [
-    { name: "Armenian", level: "" },
     { name: "English", level: "" },
     { name: "French", level: "" },
+    { name: "Armenian", level: "" },
     { name: "Spanish", level: "" },
   ],
 
