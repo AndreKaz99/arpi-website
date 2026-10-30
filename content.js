@@ -93,25 +93,17 @@ window.SITE = {
     {
       period: "UCLA",
       title: "University Teaching Experience",
-      place: "UCLA Department of European Languages and Transcultural Studies",
-      points: ["Graduate Student Researcher and Teaching Assistant"],
+      // A list shows one place per line
+      place: [
+        "UCLA Department of French and Francophone Studies",
+        "UCLA Department of European Languages and Transcultural Studies",
+      ],
+      points: ["Teaching Fellow & Teaching Assistant Consultant"],
     },
     {
-      period: "UCLA",
-      title: "Teaching Fellow & Teaching Assistant Consultant",
-      place: "UCLA Department of French and Francophone Studies",
-      points: [],
-    },
-    {
-      period: "2018 to 2019",
-      title: "Educator",
+      period: "GUSD",
+      title: "French Dual Language Immersion Teacher",
       place: "Glendale Unified School District",
-      points: [],
-    },
-    {
-      period: "2016 to 2018",
-      title: "Curriculum & Instruction",
-      place: "Curriculum Coordinator (2016 to 2017) & Language Instructor (2017 to 2018)",
       points: [],
     },
   ],

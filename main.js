@@ -191,7 +191,7 @@
             h("div", { class: "timeline__period" }, e.period),
             h("div", {},
               h("h3", { class: "timeline__title" }, e.title),
-              h("p", { class: "timeline__place" }, e.place),
+              [].concat(e.place || []).map((pl) => h("p", { class: "timeline__place" }, pl)),
               e.points && e.points.length ? h("ul", { class: "timeline__points" }, e.points.map((pt) => h("li", {}, pt))) : null
             )
           )
