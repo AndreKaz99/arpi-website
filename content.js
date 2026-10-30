@@ -52,7 +52,7 @@ window.SITE = {
   stats: [
     { value: 4, suffix: "", label: "Languages: English, French, Armenian, and Spanish" },
     { value: 8, suffix: "", label: "Conference presentations & invited talks" },
-    { value: 4, suffix: "", label: "Academic affiliations & service roles" },
+    { value: 8, suffix: "+", label: "Years of Teaching Experience" },
     { value: "PhD", suffix: "", label: "Degree from UCLA" },
   ],
 
