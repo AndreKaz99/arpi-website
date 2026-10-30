@@ -58,8 +58,8 @@ window.SITE = {
 
   // “Featured Work & News” highlights
   highlights: [
-    { title: "Teaching & Curriculum Development" },
-    { title: "K through 12 and Community Teaching" },
+    { title: "University and K\u00a0through\u00a012 Teaching Experience" },
+    { title: "Curriculum Development" },
     { title: "Conferences & Invited Talks" },
   ],
 
