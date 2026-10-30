@@ -111,7 +111,10 @@
     // About
     const st = bind("statement");
     st.textContent = "";
-    S.about.statement.split(/\s+/).forEach((w, i, arr) => {
+    const words = S.about.statement.split(/\s+/);
+    // A long statement reads as a paragraph, so it gets a smaller size
+    st.classList.toggle("about__statement--long", words.length > 40);
+    words.forEach((w, i, arr) => {
       st.append(h("span", { class: "w" }, w));
       if (i < arr.length - 1) st.append(" ");
     });

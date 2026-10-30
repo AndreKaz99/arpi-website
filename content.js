@@ -23,28 +23,26 @@ window.SITE = {
     lastName: "Melikyan",
     prefix: "Dr.",
     degree: "PhD in French and Francophone Studies, UCLA",
-    eyebrow: "French & Francophone Studies  ·  UCLA",
+    eyebrow: "French & Francophone Studies",
     tagline:
-      "Multilingual scholar and educator specializing in French and Francophone Studies. Grounded in her extensive research at UCLA, she brings a transcultural perspective to modern language pedagogy and literary analysis.",
+      "Multilingual scholar and educator specializing in French and Francophone Studies.",
     portrait: "assets/img/portrait.jpg",
     cvFile: "", // e.g. "assets/Arpi-Melikyan-Teaching-CV.pdf"; shows a “Download CV” button when set
   },
 
   // Words that scroll across the marquee band
   focus: [
+    "Transnationalism",
+    "French and Francophone Studies",
+    "Immigration",
     "Exile",
-    "Body Politics",
-    "Symbolic Homelands",
-    "Francophone Literature",
-    "Transcultural Studies",
-    "Language Pedagogy",
-    "Armenian Diaspora",
+    "Displacement",
   ],
 
   about: {
     // Large statement that lights up word-by-word as you scroll
     statement:
-      "Dr. Arpi Melikyan is a scholar and educator of French and Francophone Studies, specializing in the intersections of exile, body politics, and symbolic homelands.",
+      "Arpi Melikyan earned her Ph.D. in French and Francophone Studies from the University of California, Los Angeles in 2025, where she also taught French language, culture, and cinema. Her research examines migration, exile, and transcultural identity in contemporary Francophone literature. Her dissertation, Between Fiction, Memoir, and Manifesto: Negotiating Exile in the Works of Abnousse Shalmani, is the first book length scholarly study of Shalmani’s literary works and explores autobiographical testimony and storytelling as forms of cultural and political agency.",
     paragraphs: [
       "Her work deeply explores how narrative structures in French and Armenian contexts negotiate the complexities of identity and displacement.",
       "Her research interests are centered on transcultural studies and the advancement of language pedagogy. In the classroom, she focuses on fostering a nuanced understanding of Francophone literature, encouraging students to engage with texts as cultural manifestos of historical and personal negotiation.",

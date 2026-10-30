@@ -739,6 +739,13 @@ body::after {
   line-height: 1.15;
   letter-spacing: -0.025em;
 }
+/* Stays at 24px or more so the 3:1 contrast of unlit words still counts as large text */
+.about__statement--long {
+  max-width: 1040px;
+  font-size: clamp(24px, 2.6vw, 40px);
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+}
 /* Unlit words stay readable: 3:1 or better, the WCAG minimum for large text */
 .about__statement .w {
   opacity: 0.5;
