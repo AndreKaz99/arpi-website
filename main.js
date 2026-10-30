@@ -153,7 +153,7 @@
     bind("dissertation").append(...[
       h("p", { class: "eyebrow diss__label", "data-reveal": "" }, d.label),
       h("h3", { class: "diss__title", "data-split": "" }, d.title),
-      h("p", { class: "diss__text", "data-reveal": "", style: "--d:150ms" }, d.text),
+      d.text ? h("p", { class: "diss__text", "data-reveal": "", style: "--d:150ms" }, d.text) : null,
       d.url ? dissBadge(d) : null,
     ].filter(Boolean));
     bind("pub-note").textContent = R.publicationsNote;

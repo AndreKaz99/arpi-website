@@ -67,7 +67,6 @@ window.SITE = {
     dissertation: {
       label: "Dissertation",
       title: "Between Fiction, Memoir, and Manifesto: Negotiating Exile in the Works of Abnousse Shalmani",
-      text: "A critical analysis of exile and body politics through the symbolic homelands explored in modern Francophone literature. The study negotiates the intersections of memory and manifesto within the specific context of Abnousse Shalmani’s narratives.",
       url: "https://escholarship.org/uc/item/4q51g34j",
     },
     publicationsNote: "Peer reviewed publications forthcoming",
