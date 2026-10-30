@@ -58,18 +58,9 @@ window.SITE = {
 
   // “Featured Work & News” highlights
   highlights: [
-    {
-      title: "Teaching & Curriculum Development",
-      text: "Extensive experience at UCLA developing and delivering a diverse range of courses on French language and Francophone cultures, from introductory levels to advanced transcultural studies.",
-    },
-    {
-      title: "K through 12 and Community Teaching",
-      text: "Dedicated educator within the Glendale Unified School District, fostering language acquisition and cultural literacy through primary and community focused instructional roles.",
-    },
-    {
-      title: "Conferences & Invited Talks",
-      text: "Frequent presenter at leading academic venues including the MLA, NWSA, PAMLA, and RMMLA, contributing to global dialogues on exile and transculturalism.",
-    },
+    { title: "Teaching & Curriculum Development" },
+    { title: "K through 12 and Community Teaching" },
+    { title: "Conferences & Invited Talks" },
   ],
 
   research: {

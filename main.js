@@ -141,7 +141,7 @@
             h("span", { class: "card__num", "aria-hidden": "true" }, String(i + 1).padStart(2, "0")),
             icon(i),
             h("h3", { class: "card__title" }, c.title),
-            h("p", { class: "card__text" }, c.text)
+            c.text ? h("p", { class: "card__text" }, c.text) : null
           )
         )
       );
