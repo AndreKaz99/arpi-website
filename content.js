@@ -85,7 +85,6 @@ window.SITE = {
     citations: [
       {
         text: "Farhan, R. N. (2025). Postcolonial Feminism, Subaltern Voices, and Literary Resistance in Azar Nafisi’s Reading Lolita in Tehran. International Journal of Language, Literature and Culture, 5(4), 87 to 99.",
-        note: "Cites Dr. Arpi Melikyan’s scholarship on counter narrative discourse and the subversive potential of literary framing as part of its theoretical framework and analysis.",
       },
     ],
   },
