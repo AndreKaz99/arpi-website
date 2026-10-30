@@ -76,10 +76,6 @@ window.SITE = {
         title: "Conference Presentations",
         text: "She has presented her research at the American University of Armenia, Boston College, Rocky Mountain Modern Language Association, the National Women’s Studies Association, and the Pacific Ancient and Modern Language Association, with a forthcoming presentation at the Modern Language Association Annual Convention.",
       },
-      {
-        title: "Works in Progress",
-        text: "Scholarly articles focusing on transculturalism and exile in Francophone literature currently under development.",
-      },
     ],
     citations: [
       {
