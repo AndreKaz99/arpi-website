@@ -74,7 +74,7 @@ window.SITE = {
     other: [
       {
         title: "Conference Presentations",
-        text: "Presentations at national venues including PAMLA and RMMLA, focusing on body politics and Armenian diasporic narratives.",
+        text: "She has presented her research at the American University of Armenia, Boston College, Rocky Mountain Modern Language Association, the National Women’s Studies Association, and the Pacific Ancient and Modern Language Association, with a forthcoming presentation at the Modern Language Association Annual Convention.",
       },
       {
         title: "Works in Progress",
