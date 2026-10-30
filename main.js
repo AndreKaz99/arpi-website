@@ -162,7 +162,8 @@
       d.url ? dissBadge(d) : null,
     ].filter(Boolean));
     bind("pub-note").textContent = R.publicationsNote;
-    bind("pub-text").textContent = R.publicationsText;
+    if (R.publicationsText) bind("pub-text").textContent = R.publicationsText;
+    else bind("pub-text").remove();
     bind("research-other").append(
       ...R.other.map((o, i) =>
         h("div", { class: "research__item", "data-reveal": "", style: `--d:${i * 120}ms` },

@@ -71,8 +71,6 @@ window.SITE = {
       url: "https://escholarship.org/uc/item/4q51g34j",
     },
     publicationsNote: "Peer reviewed publications forthcoming",
-    publicationsText:
-      "Current research investigates the complex intersections of exile, trauma, and belonging within Francophone and Armenian cultural contexts. The project explores how displaced identities are reconstructed through literary and symbolic narratives of home.",
     other: [
       {
         title: "Conference Presentations",
