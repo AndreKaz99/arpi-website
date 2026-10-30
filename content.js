@@ -45,7 +45,7 @@ window.SITE = {
     // Wrap text in *asterisks* to show it in italics
     paragraphs: [
       "She earned her Ph.D. in French and Francophone Studies from the University of California, Los Angeles in 2025, where she also taught French language, culture, and cinema.",
-      "Her research examines migration, exile, and transcultural identity in contemporary Francophone literature. Her dissertation, *Between Fiction, Memoir, and Manifesto: Negotiating Exile in the Works of Abnousse Shalmani*, is the first book length scholarly study of Shalmani’s literary works and explores autobiographical testimony and storytelling as forms of cultural and political agency.",
+      "Her research examines migration, exile, and transcultural identity in contemporary Francophone literature. Her dissertation, *Between Fiction, Memoir, and Manifesto: Negotiating Exile in the Works of Abnousse Shalmani*, is the first book-length scholarly study of Shalmani’s literary works and explores autobiographical testimony and storytelling as forms of cultural and political agency.",
     ],
   },
 
@@ -59,7 +59,7 @@ window.SITE = {
 
   // “Featured Work & News” highlights
   highlights: [
-    { title: "University and K\u00a0through\u00a012 Teaching Experience" },
+    { title: "University and\u00a0K\u2060-\u206012 Teaching Experience" },
     { title: "Curriculum Development" },
     { title: "Conferences & Invited Talks" },
   ],
