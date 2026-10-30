@@ -29,6 +29,11 @@
     return el;
   }
 
+  /** Text with *asterisk* spans turned into italic <em> elements. */
+  function withItalics(text) {
+    return String(text).split(/\*([^*]+)\*/).map((part, i) => (i % 2 ? h("em", {}, part) : part));
+  }
+
   /** Hide a whole section when its list is empty. */
   function hideIfEmpty(list, el) {
     if (list && list.length) return false;
@@ -118,7 +123,7 @@
       st.append(h("span", { class: "w" }, w));
       if (i < arr.length - 1) st.append(" ");
     });
-    bind("about").append(...S.about.paragraphs.map((t, i) => h("p", { "data-reveal": "", style: `--d:${i * 120}ms` }, t)));
+    bind("about").append(...S.about.paragraphs.map((t, i) => h("p", { "data-reveal": "", style: `--d:${i * 120}ms` }, withItalics(t))));
 
     const stats = bind("stats");
     if (S.stats && S.stats.length) {

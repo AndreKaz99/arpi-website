@@ -42,9 +42,10 @@ window.SITE = {
   about: {
     // Large statement that lights up word-by-word as you scroll
     statement: "Dr. Arpi Melikyan is a scholar and educator of French and Francophone Studies.",
+    // Wrap text in *asterisks* to show it in italics
     paragraphs: [
       "She earned her Ph.D. in French and Francophone Studies from the University of California, Los Angeles in 2025, where she also taught French language, culture, and cinema.",
-      "Her research examines migration, exile, and transcultural identity in contemporary Francophone literature. Her dissertation, Between Fiction, Memoir, and Manifesto: Negotiating Exile in the Works of Abnousse Shalmani, is the first book length scholarly study of Shalmani’s literary works and explores autobiographical testimony and storytelling as forms of cultural and political agency.",
+      "Her research examines migration, exile, and transcultural identity in contemporary Francophone literature. Her dissertation, *Between Fiction, Memoir, and Manifesto: Negotiating Exile in the Works of Abnousse Shalmani*, is the first book length scholarly study of Shalmani’s literary works and explores autobiographical testimony and storytelling as forms of cultural and political agency.",
     ],
   },
 
