@@ -124,7 +124,6 @@ window.SITE = {
       type: "Conference",
       title: "Between Fiction, Memoir, and Manifesto: Negotiating Exile in Éloge du Métèque",
       venue: "Modern Language Association (MLA) Annual Convention",
-      text: "Details for this upcoming talk will be shared soon.",
       url: "",
     },
     {
@@ -132,7 +131,6 @@ window.SITE = {
       type: "Conference",
       title: "(Un)veiling Exile: The Politics of the Female Body in Khomeiny, Sade et moi",
       venue: "National Women’s Studies Association",
-      text: "Details for this upcoming talk will be shared soon.",
       url: "",
     },
     {
@@ -140,7 +138,6 @@ window.SITE = {
       type: "Conference",
       title: "Liminality and Displacements of Exile in Abnousse Shalmani’s Éloge du Métèque",
       venue: "Pacific Ancient and Modern Language Association",
-      text: "Details for this upcoming talk will be shared soon.",
       url: "",
     },
     {
@@ -148,7 +145,6 @@ window.SITE = {
       type: "Conference",
       title: "Writing Trauma at the Limits of Belonging",
       venue: "Rocky Mountain Modern Language Association",
-      text: "Details for this upcoming talk will be shared soon.",
       url: "",
     },
     {
@@ -156,7 +152,6 @@ window.SITE = {
       type: "Educational Video Series",
       title: "Armenian Icons: Charles Aznavour",
       venue: "Haykakart",
-      text: "An educational exploration of Charles Aznavour’s life and legacy, examining his influence as a French singer of Armenian heritage and his enduring impact on French and Armenian culture. The series also highlights the history of Armenian diaspora communities in Paris and Marseille and their role in preserving Armenian identity.",
       url: "",
       // Click-to-play video shown on this row
       video: {
@@ -171,7 +166,6 @@ window.SITE = {
       title: "Du français académique à la classe immersive : trajectoire et apprentissages d’une enseignante multilangue",
       lang: "fr", // title and venue are in French, so screen readers pronounce them correctly
       venue: "Atelier professionnel AATF SoCal, UCLA",
-      text: "An exploration of the transition from academic French to everyday spoken French in a dual language immersion classroom, examining how multilingual educators adapt their language practices to foster authentic communication and effective language learning.",
       url: "",
     },
     {
@@ -179,7 +173,6 @@ window.SITE = {
       type: "Conference",
       title: "Rethinking Exile: The Role of Writing in the Search for Symbolic Homelands",
       venue: "Boston College",
-      text: "A comparative examination of exile in the works of Iosif Brodsky and Abnousse Shalmani, exploring how language, identity, and migration shape the experience of displacement and redefine the condition of exile in an increasingly globalized world.",
       url: "",
     },
     {
@@ -187,7 +180,6 @@ window.SITE = {
       type: "Conference",
       title: "A Testimony on Survival: Liminality in Nigoghos Sarafian’s The Bois de Vincennes",
       venue: "American University of Armenia (AUA) Center for Truth & Justice, Human Rights and Accountability",
-      text: "An examination of Nigoghos Sarafian’s The Bois de Vincennes, exploring how literature serves as testimony to displacement, exile, and survival while examining the enduring relationship between memory, trauma, language, and the Armenian diasporic experience.",
       url: "",
     },
   ],
