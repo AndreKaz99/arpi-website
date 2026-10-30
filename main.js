@@ -273,6 +273,7 @@
     bind("contact-text").textContent = c.text;
     const addr = bind("address");
     (c.address || []).forEach((line, i) => { if (i) addr.append(h("br")); addr.append(line); });
+    if (!addr.childNodes.length) addr.remove();
     const email = bind("email");
     email.textContent = c.email;
     email.href = `mailto:${c.email}`;

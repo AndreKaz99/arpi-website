@@ -203,7 +203,7 @@ window.SITE = {
     heading: "Let’s connect.",
     text: "For academic inquiries, research collaborations, or media appearances, please get in touch directly by email.",
     email: "arpimelikyan16@ucla.edu",
-    address: ["Department of European Languages and Transcultural Studies", "University of California, Los Angeles"],
+    address: [], // optional lines shown above the email
     links: [
       { label: "LinkedIn", url: "" }, // paste the LinkedIn profile URL to show this link
     ],
